@@ -1,0 +1,11 @@
+{
+  "required": true,
+  "package": "justfatlard.lead_line.mixin",
+  "compatibilityLevel": "JAVA_25",
+  "mixins": [
+    "CopperGolemMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

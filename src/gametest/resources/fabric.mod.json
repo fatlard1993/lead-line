@@ -1,0 +1,18 @@
+{
+	"schemaVersion": 1,
+	"id": "lead-line-gametest",
+	"version": "1.0.0",
+	"name": "Lead Line game tests",
+	"description": "Ties a lead to a post and measures, holds and rappels on it.",
+	"license": "MIT",
+	"environment": "*",
+	"entrypoints": {
+		"fabric-client-gametest": [
+			"justfatlard.lead_line.gametest.LeadLine"
+		]
+	},
+	"depends": {
+		"lead-line-justfatlard": "*",
+		"fabric-client-gametest-api-v1": "*"
+	}
+}

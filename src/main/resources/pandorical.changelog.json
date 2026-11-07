@@ -1,0 +1,10 @@
+{
+	"overview": [
+		"A lead tied to a post, to measure by, walk a circle round, and rappel on."
+	],
+	"versions": {
+		"1.0.0": [
+			"Tie a lead to a post and walk: it says how far out you are. Hold it at a length and walk a circle, or hang from it and climb."
+		]
+	}
+}

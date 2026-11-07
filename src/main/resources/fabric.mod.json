@@ -1,0 +1,39 @@
+{
+  "schemaVersion": 1,
+  "id": "lead-line-justfatlard",
+  "version": "${version}",
+  "name": "Lead Line",
+  "description": "A lead tied to a post, to measure by, walk a circle round, and rappel on",
+  "authors": [
+    "justfatlard"
+  ],
+  "contact": {
+    "sources": "https://github.com/fatlard1993/lead-line"
+  },
+  "license": "MIT",
+  "icon": "assets/lead-line-justfatlard/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "justfatlard.lead_line.Main"
+    ]
+  },
+  "mixins": [
+    "lead-line-justfatlard.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=${loaderVersion}",
+    "fabric-api": "${fabricApiVersion}",
+    "minecraft": "${minecraftDependency}",
+    "java": ">=25",
+    "pandorical": ">=15.0.0",
+    "fence-posts": ">=3.1.0"
+  },
+  "custom": {
+    "modmenu": {
+      "links": {
+        "modmenu.donate": "https://github.com/sponsors/fatlard1993"
+      }
+    }
+  }
+}
