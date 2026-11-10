@@ -3,7 +3,7 @@
   "id": "lead-line-justfatlard",
   "version": "${version}",
   "name": "Lead Line",
-  "description": "A lead tied to a post, to measure by, walk a circle round, and rappel on",
+  "description": "A lead tied to a post, or shot on an arrow, to measure by, walk a circle round, rappel on and climb; and villagers and piglins on a lead",
   "authors": [
     "justfatlard"
   ],
@@ -35,5 +35,8 @@
         "modmenu.donate": "https://github.com/sponsors/fatlard1993"
       }
     }
+  },
+  "suggests": {
+    "block-tip": ">=1.2.0"
   }
 }

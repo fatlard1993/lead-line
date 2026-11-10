@@ -1,3 +1,6 @@
 {
-  "lead-line-justfatlard.held": "Lead held at %s blocks"
+  "item.lead-line-justfatlard.lead_arrow": "Lead Arrow",
+  "lead-line-justfatlard.held": "Lead held at %s blocks",
+  "lead-line-justfatlard.too_far": "Too far off to lead it",
+  "lead-line-justfatlard.let_go": "Let go of the rope"
 }

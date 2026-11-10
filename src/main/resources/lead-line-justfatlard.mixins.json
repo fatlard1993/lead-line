@@ -3,7 +3,11 @@
   "package": "justfatlard.lead_line.mixin",
   "compatibilityLevel": "JAVA_25",
   "mixins": [
-    "CopperGolemMixin"
+    "AbstractArrowAccessor",
+    "AbstractArrowMixin",
+    "AbstractVillagerMixin",
+    "CopperGolemMixin",
+    "MobMixin"
   ],
   "injectors": {
     "defaultRequire": 1

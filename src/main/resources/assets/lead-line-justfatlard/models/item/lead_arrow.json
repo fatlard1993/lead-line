@@ -1,0 +1,6 @@
+{
+	"parent": "minecraft:item/generated",
+	"textures": {
+		"layer0": "lead-line-justfatlard:item/lead_arrow"
+	}
+}

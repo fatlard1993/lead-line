@@ -30,6 +30,17 @@ dependencies {
 		throw new GradleException("fence-posts ${fencePostsProps.getProperty('mod_version')} is not built. Run ./gradlew build in ../fence-posts first.")
 	}
 	implementation files(fencePostsJar)
+
+	// Optional: block-tip, for the reading on its card. On the classpath to compile and so the tests
+	// run with it; never bundled, and only reached from behind a mod-loaded check.
+	def blockTipProps = new Properties()
+	file("../block-tip/gradle.properties").withInputStream { blockTipProps.load(it) }
+	def blockTipName = blockTipProps.getProperty("mod_id") ?: blockTipProps.getProperty("archives_base_name")
+	def blockTipJar = file("../block-tip/build/libs/${blockTipName}-${blockTipProps.getProperty('mod_version')}.jar")
+	if (!blockTipJar.exists()) {
+		throw new GradleException("block-tip ${blockTipProps.getProperty('mod_version')} is not built. Run ./gradlew build in ../block-tip first.")
+	}
+	implementation files(blockTipJar)
 }
 
 // Fabric tests these predicates against the loader's *normalized* game version,

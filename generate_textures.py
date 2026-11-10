@@ -1,11 +1,15 @@
 #!/usr/bin/env python3
-"""Generate Lead Line's icon: an oak fence post with a lead wound on it.
+"""Draw Lead Line's art out of the game's own.
 
-The post is cut from vanilla's oak planks and the lead is vanilla's own item, read out of the jar,
-so the icon is made of exactly what the mod is made of. Pure stdlib PNG reader and writer, as the
-rest of the suite; deterministic.
+  icon         an oak fence post with a lead wound on it: the post cut from vanilla's oak planks,
+               the lead vanilla's own item
+  lead_arrow   vanilla's arrow with a coil of lead knotted round the shaft, hanging under it in the
+               lead's own browns, so it reads as an arrow first and a rope second
 
-Usage: python3 generate_icon.py [path/to/minecraft.jar]
+Everything is read out of the jar, so the art is made of exactly what the mod is made of. Pure
+stdlib PNG reader and writer, as the rest of the suite; deterministic.
+
+Usage: python3 generate_textures.py [path/to/minecraft.jar]
 """
 
 import glob
@@ -209,7 +213,22 @@ def shade(px, factor):
     return tuple(min(255, int(c * factor)) for c in px[:3]) + (px[3],)
 
 
-ICON = os.path.join(HERE, "src/main/resources/assets/lead-line-justfatlard/icon.png")
+ASSETS = os.path.join(HERE, "src/main/resources/assets/lead-line-justfatlard")
+ICON = os.path.join(ASSETS, "icon.png")
+LEAD_ARROW = os.path.join(ASSETS, "textures/item/lead_arrow.png")
+
+# The coil, in the lead's own shades: L lit, M mid, D shadow. Knotted on the shaft at the top left
+# and hanging in the empty corner under it, lit where it faces up and left as the arrow is.
+COIL = [
+    "LM.....",
+    ".D.....",
+    ".LMLLM.",
+    "LD...LM",
+    "M.....D",
+    "D....MD",
+    ".DMMDD.",
+]
+COIL_LEFT, COIL_TOP = 7, 8
 
 
 def icon():
@@ -224,8 +243,20 @@ def icon():
     return stamp(out, lead, 0, 0)
 
 
+def lead_arrow():
+    lead = vanilla("item/lead.png")
+    shades = {"L": lead[2][5], "M": lead[2][4], "D": lead[3][7]}
+    out = [list(row) for row in vanilla("item/arrow.png")]
+    for y, row in enumerate(COIL):
+        for x, key in enumerate(row):
+            if key in shades:
+                out[COIL_TOP + y][COIL_LEFT + x] = shades[key]
+    return out
+
+
 def main():
     write_png(ICON, scale(icon(), 8))
+    write_png(LEAD_ARROW, lead_arrow())
 
 
 if __name__ == "__main__":

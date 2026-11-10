@@ -3,7 +3,7 @@
 	"id": "lead-line-gametest",
 	"version": "1.0.0",
 	"name": "Lead Line game tests",
-	"description": "Ties a lead to a post and measures, holds and rappels on it.",
+	"description": "Ties a lead to a post and measures, holds and rappels on it; shoots a lead arrow and climbs it.",
 	"license": "MIT",
 	"environment": "*",
 	"entrypoints": {

@@ -1,0 +1,26 @@
+{
+	"fabric:load_conditions": [
+		{
+			"condition": "fabric:all_mods_loaded",
+			"values": [
+				"fletch_craft"
+			]
+		}
+	],
+	"type": "fletch_craft:fletching",
+	"group": "arrows",
+	"width": 3,
+	"height": 2,
+	"ingredients": [
+		"minecraft:lead",
+		"minecraft:lead",
+		"minecraft:lead",
+		"minecraft:arrow",
+		"minecraft:arrow",
+		"minecraft:arrow"
+	],
+	"result": {
+		"id": "lead-line-justfatlard:lead_arrow",
+		"count": 3
+	}
+}

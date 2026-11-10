@@ -1,8 +1,16 @@
 {
 	"overview": [
-		"A lead tied to a post, to measure by, walk a circle round, and rappel on."
+		"A lead tied to a post, or shot on an arrow, to measure by, walk a circle round, rappel on and climb."
 	],
 	"versions": {
+		"1.1.0": [
+			"Lead arrows: a lead and an arrow crafted together. Where one sticks its lead runs back to you, held at the length it flew, to climb by sneaking. Click a fence to tie it off there; shoot a creature to put it on a lead.",
+			"A rope tied off at both ends, an arrow's lead at a fence or a lead from post to post, is climbed as a lead in hand is: sneak to take hold and climb, jump to drop a step, K to let go.",
+			"Villagers, wandering traders, zombie villagers and piglins can be put on a lead.",
+			"Hanging from a lead is steady: the lead's pull now reaches the player hanging on it, who no longer bobs.",
+			"Rappelling: each jump drops you a step down the rope, and holding sneak climbs back up.",
+			"With Block Tip 1.2, the reading stays up on its card instead of the action bar."
+		],
 		"1.0.0": [
 			"Tie a lead to a post and walk: it says how far out you are. Hold it at a length and walk a circle, or hang from it and climb."
 		]
