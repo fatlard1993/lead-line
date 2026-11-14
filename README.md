@@ -26,6 +26,8 @@ Hold the lead at a length at the top of a drop, and step off. You hang from it. 
 
 A lead and an arrow, crafted together, make a lead arrow (three of each in a [Fletch Craft](https://github.com/fatlard1993/fletch-craft) fletching table make three). Any bow or crossbow fires it. Where it sticks, its lead runs back to your hand, held at the length it flew: shoot it into a ceiling, the underside of a bridge or the lip of a ledge, and **sneak** to climb it, the way you climb a lead from a post. Jump to let it run a step, press **K** to let it run free, and walk it round to measure as with any other.
 
+![A lead arrow stuck in the underside of a stone bridge, its lead running down to the player who shot it, bow in hand](screenshots/lead-arrow-bridge.png)
+
 It ties to a block within 46 blocks of you; farther, it lands as a lead arrow to fetch. A new lead arrow lets go of whatever lead you held before it, from a post or another arrow.
 
 Click a fence with an arrow's lead in hand and it is tied off there, running from the arrow to the fence: a fixed rope up a cliff, across a gap, wherever the arrow went, out to 48 blocks. Click the knot to take it back in hand.
