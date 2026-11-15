@@ -138,16 +138,8 @@ public final class LeadLine implements FabricClientGameTest {
 			check(justfatlard.block_tip.Slices.showing(id).stream().anyMatch(line -> line.contains("blocks out") && line.contains("held at")),
 				"block-tip's card does not show the reading: " + justfatlard.block_tip.Slices.showing(id));
 
-			// A picture of it, from in front: the player hanging, the lead up to the post.
 			server.runCommand("execute as @a at @s run tp @s ~ ~ ~ 90 -25");
-			context.runOnClient(client -> {
-				client.options.setCameraType(net.minecraft.client.CameraType.THIRD_PERSON_FRONT);
-			});
 			context.waitTicks(15);
-			justfatlard.pandorical.gametest.Pictures.frame(context, connection, "hanging");
-			context.runOnClient(client -> {
-				client.options.setCameraType(net.minecraft.client.CameraType.FIRST_PERSON);
-			});
 
 			float health = server.computeOnServer(s -> connection.getServerPlayer().getHealth());
 			check(health == server.computeOnServer(s -> connection.getServerPlayer().getMaxHealth()), "hanging from the lead hurt: " + health);
@@ -189,10 +181,7 @@ public final class LeadLine implements FabricClientGameTest {
 			}), "the lead arrow could be pulled out from under the player hanging on it");
 
 			server.runCommand("execute as @a at @s run tp @s ~ ~ ~ 90 -25");
-			context.runOnClient(client -> client.options.setCameraType(net.minecraft.client.CameraType.THIRD_PERSON_FRONT));
 			context.waitTicks(15);
-			justfatlard.pandorical.gametest.Pictures.frame(context, connection, "lead-arrow");
-			context.runOnClient(client -> client.options.setCameraType(net.minecraft.client.CameraType.FIRST_PERSON));
 
 			// Its block broken, the arrow is shaken loose and the lead goes with it: no lead drops, and
 			// what lands is still a lead arrow, to pick up.
