@@ -1,0 +1,42 @@
+{
+  "demo": {
+    "name": "Lead Line",
+    "icon": "lead-line-justfatlard:lead_arrow",
+    "about": [
+      "A lead tied to a fence post tells you how far you have walked from it, holds at a length to walk a circle or rappel on, and can be shot on an arrow to climb.",
+      "Tie a lead to a fence and walk off to read the distance. Then build a tower with a fence on top, tie on, press K and step off: jump lets it out, sneak climbs. A lead arrow shot into the tower climbs it, or leads a villager away."
+    ]
+  },
+  "pvp_preset": 1,
+  "needs": ["lead-line-justfatlard"],
+  "preset": {
+    "name": "Lead Line",
+    "icon": "lead-line-justfatlard:lead_arrow",
+    "pvp": false,
+    "game_mode": "survival",
+    "entry_kit": [
+      {"slot": 0, "item": {"id": "minecraft:lead", "count": 8}},
+      {"slot": 1, "item": {"id": "minecraft:oak_fence", "count": 16}},
+      {"slot": 2, "item": {"id": "minecraft:cobblestone", "count": 64}},
+      {"slot": 3, "item": {"id": "minecraft:bow", "count": 1}},
+      {"slot": 4, "item": {"id": "lead-line-justfatlard:lead_arrow", "count": 8}},
+      {"slot": 8, "item": {"id": "minecraft:bread", "count": 8}},
+      {"slot": 9, "item": {"id": "minecraft:cobblestone", "count": 64}},
+      {"slot": 10, "item": {"id": "minecraft:arrow", "count": 8}}
+    ],
+    "respawn_kit": "entry",
+    "goal": "time",
+    "mobs": "always",
+    "mob_rarity": "rare",
+    "mob_default": "off",
+    "mob_levels": {
+      "minecraft:villager": "normal"
+    },
+    "life": 15,
+    "size": 3,
+    "world": "overworld",
+    "shape": "flat",
+    "biome": "minecraft:plains",
+    "weather": "clear"
+  }
+}
