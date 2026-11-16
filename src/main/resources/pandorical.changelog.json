@@ -3,6 +3,10 @@
 		"A lead tied to a post, or shot on an arrow, to measure by, walk a circle round, rappel on and climb."
 	],
 	"versions": {
+		"1.1.1": [
+			"A demo to play in PvP Dimensions' onboarding.",
+			"Looking for a lead or a tied rope near a player checks only the copper golems loaded, and nothing at all where there are none, instead of searching the world around every sneaking player each tick."
+		],
 		"1.1.0": [
 			"Lead arrows: a lead and an arrow crafted together. Where one sticks its lead runs back to you, held at the length it flew, to climb by sneaking. Click a fence to tie it off there; shoot a creature to put it on a lead.",
 			"A rope tied off at both ends, an arrow's lead at a fence or a lead from post to post, is climbed as a lead in hand is: sneak to take hold and climb, jump to drop a step, K to let go.",
