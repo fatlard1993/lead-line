@@ -101,7 +101,7 @@ public final class TiedRopes {
 		Vec3 waist = Tethers.waist(player);
 		Grip best = null;
 		double nearest = REACH;
-		for (CopperGolem holder : player.level().getEntitiesOfClass(CopperGolem.class, player.getBoundingBox().inflate(SEARCH), Tethers::isHolder)) {
+		for (CopperGolem holder : Tethers.golemsIn(player.level(), player.getBoundingBox().inflate(SEARCH), Tethers::isHolder)) {
 			Rope rope = ropeOf(holder);
 			if (rope == null) continue;
 			double down = rope.nearest(waist);

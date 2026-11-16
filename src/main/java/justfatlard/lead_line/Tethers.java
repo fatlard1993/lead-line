@@ -4,6 +4,8 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.fabricmc.fabric.api.attachment.v1.AttachmentRegistry;
 import net.fabricmc.fabric.api.attachment.v1.AttachmentType;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerEntityEvents;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.UUIDUtil;
 import net.minecraft.resources.Identifier;
@@ -17,10 +19,16 @@ import net.minecraft.world.entity.animal.golem.CopperGolem;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.IdentityHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
+import java.util.function.Predicate;
 
 /**
  * A lead tied to a post and held in the hand: how far out it reaches, and, held at a length, a
@@ -86,10 +94,35 @@ public final class Tethers {
 		Identifier.fromNamespaceAndPath(Main.MOD_ID, "held"), Held.CODEC);
 
 	private static final Map<UUID, Tether> tethers = new HashMap<>();
-	/** Whether each player was holding jump last tick, so a press drops one step and holding it drops no more. */
-	private static final Map<UUID, Boolean> jumping = new HashMap<>();
+	/** The players holding jump last tick, so a press drops one step and holding it drops no more. */
+	private static final Set<UUID> jumping = new HashSet<>();
+	/** Every copper golem loaded, by level: a lead's post end is one, so where there are none there is no lead to look for. */
+	private static final Map<ServerLevel, Set<CopperGolem>> golems = new IdentityHashMap<>();
 	/** Set once block-tip takes the reading onto its card, after which the action bar keeps quiet. */
 	private static volatile boolean onCard;
+
+	static void register() {
+		ServerEntityEvents.ENTITY_LOAD.register((entity, level) -> {
+			if (entity instanceof CopperGolem golem) golems.computeIfAbsent(level, key -> Collections.newSetFromMap(new IdentityHashMap<>())).add(golem);
+		});
+		ServerEntityEvents.ENTITY_UNLOAD.register((entity, level) -> {
+			if (!(entity instanceof CopperGolem golem)) return;
+			Set<CopperGolem> loaded = golems.get(level);
+			if (loaded != null && loaded.remove(golem) && loaded.isEmpty()) golems.remove(level);
+		});
+		ServerLifecycleEvents.SERVER_STOPPED.register(server -> golems.clear());
+	}
+
+	/** The loaded copper golems in this level whose bounds touch the box and that pass the test. */
+	static List<CopperGolem> golemsIn(ServerLevel level, AABB box, Predicate<CopperGolem> test) {
+		Set<CopperGolem> loaded = golems.get(level);
+		if (loaded == null) return List.of();
+		List<CopperGolem> found = new ArrayList<>();
+		for (CopperGolem golem : loaded) {
+			if (golem.getBoundingBox().intersects(box) && test.test(golem)) found.add(golem);
+		}
+		return found;
+	}
 
 	/** Whether this golem holds the far end of a lead in a player's hand, from a post or a lead arrow. */
 	public static boolean holdsForPlayer(Entity entity) {
@@ -104,8 +137,7 @@ public final class Tethers {
 	public static CopperGolem holderOf(ServerPlayer player) {
 		Tether tether = tethers.get(player.getUUID());
 		if (tether != null && stillHeld(player, tether.holder)) return tether.holder;
-		for (CopperGolem golem : player.level().getEntitiesOfClass(CopperGolem.class, player.getBoundingBox().inflate(LONGEST),
-				golem -> stillHeld(player, golem))) {
+		for (CopperGolem golem : golemsIn(player.level(), player.getBoundingBox().inflate(LONGEST), golem -> stillHeld(player, golem))) {
 			tethers.put(player.getUUID(), new Tether(golem));
 			return golem;
 		}
@@ -217,9 +249,9 @@ public final class Tethers {
 
 	/** Whether this player pressed jump this tick: a press drops one step, and holding it drops no more. Asked once a tick. */
 	private static boolean jumped(ServerPlayer player) {
-		boolean jump = player.getLastClientInput().jump();
-		boolean was = Boolean.TRUE.equals(jumping.put(player.getUUID(), jump));
-		return jump && !was;
+		if (player.getLastClientInput().jump()) return jumping.add(player.getUUID());
+		jumping.remove(player.getUUID());
+		return false;
 	}
 
 	/**

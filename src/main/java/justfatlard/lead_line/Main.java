@@ -62,6 +62,7 @@ public class Main implements ModInitializer {
 		if (net.fabricmc.loader.api.FabricLoader.getInstance().isModLoaded("block-tip")) {
 			Tethers.useCard(justfatlard.lead_line.integration.LeadTips.register());
 		}
+		Tethers.register();
 		ServerTickEvents.END_SERVER_TICK.register(Tethers::tick);
 		ServerPlayConnectionEvents.DISCONNECT.register((handler, server) -> Tethers.forget(handler.getPlayer().getUUID()));
 	}
