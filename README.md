@@ -24,7 +24,7 @@ Hold the lead at a length at the top of a drop, and step off. You hang from it. 
 
 ## Lead Arrows
 
-A lead and an arrow, crafted together, make a lead arrow (three of each in a [Fletch Craft](https://github.com/fatlard1993/fletch-craft) fletching table make three). Any bow or crossbow fires it. Where it sticks, its lead runs back to your hand, held at the length it flew: shoot it into a ceiling, the underside of a bridge or the lip of a ledge, and **sneak** to climb it, the way you climb a lead from a post. Jump to let it run a step, press **K** to let it run free, and walk it round to measure as with any other.
+A lead and an arrow, crafted together, make a lead arrow (three of each in a [Fletch Craft](https://github.com/fatlard1993/fletch-craft) fletching table make three). Any bow or crossbow fires it. Where it sticks, its lead runs back to your hand, held at the length it flew: shoot it into a ceiling, the underside of a bridge or the lip of a ledge, and **sneak** to climb it, the way you climb a lead from a post; sneaking under it takes in any slack first, so walk up to the wall and climb. Jump to let it run a step, press **K** to let it run free, and walk it round to measure as with any other. Press **K** again, running free, to let go of it: the lead stays in the arrow, a lead arrow to fetch.
 
 ![A lead arrow stuck in the underside of a stone bridge, its lead running down to the player who shot it, bow in hand](screenshots/lead-arrow-bridge.png)
 

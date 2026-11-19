@@ -206,11 +206,26 @@ public final class Tethers {
 		player.sendOverlayMessage(Component.translatableWithFallback("lead-line-justfatlard.freed", "Lead running free"));
 	}
 
-	/** The key: held at the length it runs now, or let go if it is held, or of the tied rope they are on. */
+	/**
+	 * The key: held at the length it runs now, or run free if it is held, or let go of the tied rope they
+	 * are on. A lead arrow's lead already running free is let go of outright, left in its arrow to fetch:
+	 * nothing else in reach unties it from a ceiling.
+	 */
 	public static void toggle(ServerPlayer player) {
 		if (TiedRopes.letGo(player)) return;
-		if (lengthOf(player) != null) free(player);
-		else hold(player, null);
+		if (lengthOf(player) != null) {
+			free(player);
+			return;
+		}
+		CopperGolem holder = holderOf(player);
+		if (holder != null && ArrowLeads.isHolder(holder)) {
+			ArrowLeads.release(holder);
+			tethers.remove(player.getUUID());
+			player.level().playSound(null, player.getX(), player.getY(), player.getZ(), net.minecraft.sounds.SoundEvents.LEAD_UNTIED, net.minecraft.sounds.SoundSource.PLAYERS, 1.0F, 1.0F);
+			player.sendOverlayMessage(Component.translatableWithFallback("lead-line-justfatlard.let_go", "Let go of the rope"));
+			return;
+		}
+		hold(player, null);
 	}
 
 	static void useCard(boolean card) {
@@ -296,18 +311,30 @@ public final class Tethers {
 	private static void pull(ServerPlayer player, CopperGolem holder, double held, boolean jumped) {
 		Vec3 anchor = anchorOf(holder);
 		Vec3 waist = waist(player);
+		Vec3 out = waist.subtract(anchor);
+		double distance = out.length();
 		// Below the post with the lead taut: hanging from it, or against a wall on it, where the game
 		// may well call the player on the ground. Either way the lead is what they are on.
 		boolean under = waist.y < anchor.y - 1;
-		boolean hanging = under && waist.distanceTo(anchor) >= held - 0.3;
-		double length = hanging ? Math.max(SHORTEST, Math.min(LONGEST_HELD, climb(player, jumped, held))) : held;
+		// Sneaking under it takes in the slack first, so a lead walked in under its arrow climbs at once.
+		boolean reelingIn = under && player.getLastClientInput().shift();
+		boolean hanging = under && (distance >= held - 0.3 || reelingIn);
+		double from = reelingIn ? Math.min(held, distance) : held;
+		double length = hanging ? Math.max(SHORTEST, Math.min(LONGEST_HELD, climb(player, jumped, from))) : held;
 		if (length != held) setLength(player, holder, length);
 
-		Vec3 out = waist.subtract(anchor);
-		double distance = out.length();
 		boolean caught = distance > length || (under && !player.onGround() && distance > length - CATCH);
-		if (caught) {
-			Vec3 outward = out.scale(1 / distance);
+		if (!caught) return;
+		Vec3 outward = out.scale(1 / distance);
+		// On the ground and not climbing, the lead only stops them going farther out. Drawn back along the
+		// lead instead, walking away from a post above them would carry them up its arc into the air.
+		double rise = anchor.y - waist.y;
+		Vec3 across = new Vec3(out.x, 0, out.z);
+		double radius = Math.sqrt(Math.max(0, length * length - rise * rise));
+		if (player.onGround() && !reelingIn && radius > 0.5 && across.length() > 1.0E-6) {
+			Vec3 flat = across.normalize();
+			drawTo(player, new Vec3(anchor.x, waist.y, anchor.z).add(flat.scale(radius)), flat);
+		} else {
 			drawTo(player, anchor.add(outward.scale(length)), outward);
 		}
 	}

@@ -210,6 +210,45 @@ public final class LeadLine implements FabricClientGameTest {
 			check(server.computeOnServer(s -> connection.getServerPlayer().getInventory().contains(stack -> stack.is(Main.LEAD_ARROW))),
 				"the fallen lead arrow did not come back to the player as a lead arrow");
 
+			// Slack, walked in under it, sneaking takes the slack in and climbs at once.
+			stand(server, range.east(1), context);
+			shootUp(server, connection);
+			server.waitFor(s -> Tethers.holderOf(connection.getServerPlayer()) != null);
+			server.runOnServer(s -> Tethers.hold(connection.getServerPlayer(), 12.0));
+			context.waitTicks(5);
+			double slackGround = server.computeOnServer(s -> connection.getServerPlayer().getY());
+			context.getInput().holdKeyFor(options -> options.keyShift, 30);
+			context.waitTicks(5);
+			double slackUp = server.computeOnServer(s -> connection.getServerPlayer().getY());
+			check(slackUp > slackGround + 2.0, "sneaking did not climb a slack lead arrow's lead: " + slackGround + " to " + slackUp);
+
+			// Backing away on the ground, the lead stops them at its length and does not lift them up its arc.
+			server.runOnServer(s -> {
+				Tethers.hold(connection.getServerPlayer(), 9.0);
+				connection.getServerPlayer().teleportTo(range.getX() + 1.5, range.getY(), range.getZ() + 0.5);
+			});
+			context.waitTicks(20);
+			double backGround = server.computeOnServer(s -> connection.getServerPlayer().getY());
+			context.getInput().holdKeyFor(options -> options.keyDown, 60);
+			double highest = backGround;
+			for (int i = 0; i < 6; i++) {
+				context.waitTicks(5);
+				highest = Math.max(highest, server.computeOnServer(s -> connection.getServerPlayer().getY()));
+			}
+			check(highest < backGround + 1.3, "backing away on the lead lifted the player: " + backGround + " to " + highest);
+
+			// The key twice: run free, then let go, the lead left in its arrow.
+			server.runOnServer(s -> Tethers.toggle(connection.getServerPlayer()));
+			server.runOnServer(s -> Tethers.toggle(connection.getServerPlayer()));
+			context.waitTicks(5);
+			check(server.computeOnServer(s -> Tethers.holderOf(connection.getServerPlayer()) == null), "the key did not let go of the lead arrow's lead");
+			check(server.computeOnServer(s -> {
+				Arrow arrow = stuckArrow(s, roof.east(1));
+				return arrow != null && arrow.getPickupItemStackOrigin().is(Main.LEAD_ARROW);
+			}), "the arrow let go of is not a lead arrow still");
+			check(leadsAround(server, range, roof) == 0, "letting go dropped a lead");
+			server.runOnServer(s -> s.overworld().getEntitiesOfClass(Arrow.class, new AABB(roof).inflate(4)).forEach(Arrow::discard));
+
 			// Tied off at a fence twenty blocks along, farther than the game looks for leads to tie: the lead
 			// runs from the arrow to the fence, out of the player's hand, holds past the twelve at which the
 			// game would snap it, and the arrow is anyone's to take back now.
