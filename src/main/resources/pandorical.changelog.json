@@ -3,6 +3,9 @@
 		"A lead tied to a post, or shot on an arrow, to measure by, walk a circle round, rappel on and climb."
 	],
 	"versions": {
+		"1.1.2": [
+			"A lead arrow's lead climbs from slack, stops you on the ground instead of lifting you when you back away, and lets go on a second K."
+		],
 		"1.1.1": [
 			"A demo to play in PvP Dimensions' onboarding.",
 			"Looking for a lead or a tied rope near a player checks only the copper golems loaded, and nothing at all where there are none, instead of searching the world around every sneaking player each tick."
